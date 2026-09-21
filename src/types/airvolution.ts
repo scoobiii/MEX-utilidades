@@ -166,6 +166,8 @@ export interface ProvenanceChainItem {
 export interface AirVolutionUnit {
   id: string;
   serialNumber: string;
+  assetTag: string;
+  patrimonialNumber: string;
   blockId: string;
   blockName: string;
   location: string;
@@ -194,6 +196,8 @@ export interface AirVolutionUnit {
     power: number;
     cop: number;
   }[];
+  forecastSource: 'PROPHET_API' | 'DEMO_SYNTHETIC';
+  forecastHorizons: Array<'1D' | '1M' | '1A'>;
   forecast: {
     time: string;
     t1_projected: number;

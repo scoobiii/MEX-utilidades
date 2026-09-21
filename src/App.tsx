@@ -283,10 +283,10 @@ export default function App() {
       {/* Main Content */}
       <main className={cn(
         "flex-1 transition-all duration-300",
-        sidebarOpen ? "ml-72" : "ml-0"
+        sidebarOpen ? "lg:ml-72" : "ml-0"
       )}>
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md h-20 border-b border-slate-200 flex items-center justify-between px-10 sticky top-0 z-40">
+        <header className="bg-white/80 backdrop-blur-md h-20 border-b border-slate-200 flex items-center justify-between px-4 sm:px-10 sticky top-0 z-40">
           <div className="flex items-center gap-6">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -341,7 +341,7 @@ export default function App() {
         </header>
 
         {/* Dashboard Content */}
-        <div className="p-10 space-y-10">
+        <div className="p-4 sm:p-10 space-y-10">
           {activeTab === 'overview' && (
             <div className="space-y-10">
               <div className="flex items-end justify-between">

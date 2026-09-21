@@ -80,6 +80,9 @@ export function SplitSystemTelemetryView({ unit, onOpenOS }: SplitSystemTelemetr
             <span className="bg-slate-800 text-slate-300 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700">
               S/N: {unit.serialNumber}
             </span>
+            <span className="bg-slate-800 text-slate-300 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700">
+              TAG: {unit.assetTag} · PAT: {unit.patrimonialNumber}
+            </span>
             <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-800/80 text-[10px] font-mono px-2 py-0.5 rounded flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               Gateway LAN {unit.ip_address}:{unit.port}
@@ -91,6 +94,12 @@ export function SplitSystemTelemetryView({ unit, onOpenOS }: SplitSystemTelemetr
           <p className="text-xs text-slate-400 mt-1">
             Localização: <span className="text-slate-300 font-medium">{unit.location}</span> | Modelo Evaporadora: <span className="font-mono text-blue-300">{unit.nameplate.model_indoor}</span> | Condensadora: <span className="font-mono text-amber-300">{unit.nameplate.model_outdoor}</span>
           </p>
+          <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-mono text-slate-400">
+            <span className="rounded border border-slate-700 bg-slate-800 px-2 py-1">
+              Forecast: {unit.forecastSource === 'PROPHET_API' ? 'Prophet API' : 'demonstração sintética'}
+            </span>
+            <span className="rounded border border-slate-700 bg-slate-800 px-2 py-1">Horizontes: {unit.forecastHorizons.join(' · ')}</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">

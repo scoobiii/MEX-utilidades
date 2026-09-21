@@ -323,6 +323,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
   {
     id: 'AV-GPA-01',
     serialNumber: '42AFVCI18S5-2026-9041A',
+    assetTag: 'HVAC-GPA-1965-001',
+    patrimonialNumber: 'PAT-1965-0001',
     blockId: '1965_SECA',
     blockName: 'Bloco 1965: Mercearia Seca : RH',
     location: 'Bloco 1965 - Mercearia Seca : RH (Split System Midea 18KBTU)',
@@ -351,6 +353,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
     },
     condenser: generateCondenserData(29.0, 72.4, 38.2, 221.0, 6.82, 54, 820),
     recentHistory: generateHistory(21.8, 10.2, 38.5, 29.0, 6.82),
+    forecastSource: 'DEMO_SYNTHETIC',
+    forecastHorizons: ['1D', '1M', '1A'],
     forecast: generateForecast(21.8, 21.0),
     rawFrames: [
       {
@@ -452,6 +456,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
   {
     id: 'AV-GPA-02',
     serialNumber: '42AFVCI18S5-2026-9042B',
+    assetTag: 'HVAC-GPA-B-002',
+    patrimonialNumber: 'PAT-B-0002',
     blockId: 'B',
     blockName: 'Bloco B (Almoxarifado)',
     location: 'Pavimento Térreo - Área B-04',
@@ -476,6 +482,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
     },
     condenser: generateCondenserData(30.1, 82.6, 44.1, 219.0, 7.95, 68, 880),
     recentHistory: generateHistory(25.4, 20.8, 44.2, 30.1, 7.95),
+    forecastSource: 'DEMO_SYNTHETIC',
+    forecastHorizons: ['1D', '1M', '1A'],
     forecast: generateForecast(25.4, 22.0),
     rawFrames: [
       {
@@ -535,6 +543,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
   {
     id: 'AV-GPA-03',
     serialNumber: '42AFVCI18S5-2026-9043C',
+    assetTag: 'HVAC-GPA-APOIO-003',
+    patrimonialNumber: 'PAT-APOIO-0003',
     blockId: 'APOIO',
     blockName: 'Bloco Apoio (Sala Técnica / Elétrica)',
     location: 'Galpão de Apoio - Subestação',
@@ -559,6 +569,8 @@ export const initialAirVolutionUnits: AirVolutionUnit[] = [
     },
     condenser: generateCondenserData(31.0, 89.2, 46.8, 219.0, 10.45, 82, 950),
     recentHistory: generateHistory(27.2, 12.1, 67.5, 31.0, 10.45),
+    forecastSource: 'DEMO_SYNTHETIC',
+    forecastHorizons: ['1D', '1M', '1A'],
     forecast: generateForecast(27.2, 22.0),
     rawFrames: [
       {
