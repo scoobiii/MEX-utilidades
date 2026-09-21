@@ -55,10 +55,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
       - name: Start deterministic API contract stub
         run: |
           node tests/k6/mock-api.mjs > /tmp/mex-api.log 2>&1 &
           echo $! > /tmp/mex-api.pid
+
+      - name: Wait for API stub
+        run: |
+          for i in {1..20}; do
+            curl -fsS http://127.0.0.1:8000/api/v1/health && exit 0
+            sleep 1
+          done
+          cat /tmp/mex-api.log
+          exit 1
 
       - name: Install k6
         uses: grafana/setup-k6-action@v1
