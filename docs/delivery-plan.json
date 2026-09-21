@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "sourceOfTruth": "docs/delivery-plan.json",
+  "rule": "A deliverable is VERIFIED only when implementation, mapped tests/benchmarks, required coverage, VUA verification and PR merge evidence exist.",
+  "products": [
+    {
+      "id": "ac-monitoring",
+      "name": "App AC — Controle e Monitoramento",
+      "status": "primary",
+      "scope": ["assets", "telemetry", "diagnostics", "performance", "forecast", "offline"]
+    },
+    {
+      "id": "pmoc-maintenance",
+      "name": "App PMOC — Gestão de Manutenção",
+      "status": "primary",
+      "scope": ["pmoc", "work-orders", "maintenance-plan", "evidence", "materials", "workforce", "audit"]
+    },
+    {
+      "id": "utilities-core",
+      "name": "Core Utilities — plataforma futura",
+      "status": "future",
+      "scope": ["energy", "water", "gas", "other-utilities"],
+      "rule": "New utility domains reuse tenant/site/environment/asset/work-order/evidence/analytics/security contracts without coupling HVAC rules into the core."
+    }
+  ],
+  "benchmarks": {
+    "coverage": { "type": "threshold", "target": 100, "unit": "percent" },
+    "antiMock": { "type": "gate", "target": "pass" },
+    "vua": { "type": "gate", "target": "verified" },
+    "build": { "type": "gate", "target": "pass" },
+    "k6Smoke": { "type": "gate", "target": "pass" },
+    "tests": { "type": "gate", "target": "pass" },
+    "deliverableEvidence": { "type": "required", "target": "implementation+test+benchmark+docs+merge" }
+  },
+  "sprints": [
+    {
+      "id": "S0",
+      "name": "Foundation and quality gates",
+      "product": "utilities-core",
+      "deliverables": [
+        "domain rules and provenance",
+        "VUA quality flow",
+        "100% coverage gate",
+        "anti-mock gate",
+        "k6 smoke gate",
+        "machine-readable delivery plan"
+      ]
+    },
+    {
+      "id": "S1",
+      "name": "Mobile-first UX",
+      "products": ["ac-monitoring", "pmoc-maintenance"],
+      "deliverables": ["Android shell", "responsive desktop", "user dashboard", "technician dashboard", "manager/PMOC dashboard", "UX/E2E tests"]
+    },
+    {
+      "id": "S2",
+      "name": "Asset registry",
+      "products": ["ac-monitoring", "pmoc-maintenance"],
+      "deliverables": ["asset", "evaporator", "condenser", "manufacturer/model", "serial/tag/patrimony", "Asset↔DeviceBinding", "contract tests"]
+    },
+    {
+      "id": "S3",
+      "name": "Telemetry and persistence",
+      "product": "ac-monitoring",
+      "deliverables": ["T1/T2/T3/T4", "liquid line", "voltage/current", "delta-T", "performance", "inferred superheat/subcooling", "SQLite", "offline queue", "idempotent sync"]
+    },
+    {
+      "id": "S4",
+      "name": "API and gateway",
+      "products": ["ac-monitoring", "utilities-core"],
+      "deliverables": ["REST/OpenAPI", "local server", "Arduino/ESP32", "manufacturer adapters", "authentication", "ACK/readback", "integration tests"]
+    },
+    {
+      "id": "S5",
+      "name": "Operational dashboards",
+      "products": ["ac-monitoring", "pmoc-maintenance"],
+      "deliverables": ["realtime", "24h", "weekly", "monthly", "annual", "forecast visualization", "anomaly detection", "state visualization", "export"]
+    },
+    {
+      "id": "S6",
+      "name": "Forecast",
+      "product": "ac-monitoring",
+      "deliverables": ["Prophet service", "1D/1W/1M/1A", "confidence intervals", "temporal validation", "OBSERVED+DERIVED input policy", "forecast error monitoring"]
+    },
+    {
+      "id": "S7",
+      "name": "PMOC and maintenance execution",
+      "product": "pmoc-maintenance",
+      "deliverables": ["active plan", "distribution", "adherence", "WorkOrder", "before/during/after evidence", "materials", "hours", "audit", "WO closure"]
+    },
+    {
+      "id": "S8",
+      "name": "Integrations",
+      "products": ["ac-monitoring", "pmoc-maintenance", "utilities-core"],
+      "deliverables": ["Arduino/ESP32", "Midea", "Daikin", "LG", "Carrier", "Samsung", "Fujitsu", "Gree", "TCL", "Elgin", "commercial APIs", "protocol tests before support claim"]
+    },
+    {
+      "id": "S9",
+      "name": "IAQ",
+      "products": ["ac-monitoring", "utilities-core"],
+      "deliverables": ["environment sensors", "GPA Index", "history", "alerts", "user dashboard", "quality rules", "limitations documentation"]
+    },
+    {
+      "id": "S10",
+      "name": "Access and security",
+      "products": ["ac-monitoring", "pmoc-maintenance", "utilities-core"],
+      "deliverables": ["USER/TECHNICIAN/MANAGER/ADMIN", "RBAC", "tenant scope", "RLS", "audit", "session management"]
+    },
+    {
+      "id": "S11",
+      "name": "Training and agent",
+      "products": ["ac-monitoring", "pmoc-maintenance", "utilities-core"],
+      "deliverables": ["document base", "embeddings", "pgvector", "profile tracks", "mini-courses", "agent knowledge", "response evaluation"]
+    },
+    {
+      "id": "S12",
+      "name": "Production",
+      "products": ["ac-monitoring", "pmoc-maintenance", "utilities-core"],
+      "deliverables": ["CI/CD", "100% defined coverage", "load test", "observability", "alerts", "backup/restore", "security", "SLO", "real pilot", "go-live checklist", "Production Ready"]
+    }
+  ]
+}
