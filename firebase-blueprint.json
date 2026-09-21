@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "os_records": {
+      "title": "OrdemDeServico",
+      "description": "Ordem de serviço de manutenção HVAC-R no GPA CD1",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador da OS"
+        },
+        "block": {
+          "type": "string",
+          "description": "Bloco ou área de instalação"
+        },
+        "requester": {
+          "type": "string",
+          "description": "Solicitante ou emissor da OS"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Aberto", "Em Execução", "Concluído"],
+          "description": "Status operacional da OS"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["Normal", "Média", "Alta", "Urgente"],
+          "description": "Nível de prioridade"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Descrição do serviço"
+        },
+        "assignedTechnician": {
+          "type": "string",
+          "description": "Técnico responsável"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data de criação"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data de atualização"
+        }
+      },
+      "required": ["id", "block", "requester", "status", "priority"]
+    },
+    "pmoc_routines": {
+      "title": "RotinaPMOC",
+      "description": "Procedimento programado do plano PMOC",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador do procedimento"
+        },
+        "category": {
+          "type": "string",
+          "description": "Categoria do equipamento"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Descrição da atividade"
+        },
+        "periodicity": {
+          "type": "string",
+          "enum": ["M", "T", "S", "A"],
+          "description": "Periodicidade da rotina"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Em Dia", "Agendado", "Pendente", "Atrasado"],
+          "description": "Status da execução"
+        }
+      },
+      "required": ["id", "category", "description", "periodicity", "status"]
+    }
+  },
+  "firestore": {
+    "/os_records/{osId}": {
+      "schema": {
+        "$ref": "#/entities/os_records"
+      },
+      "description": "Coleção de ordens de serviço ativas e históricas do GPA CD1"
+    },
+    "/pmoc_routines/{routineId}": {
+      "schema": {
+        "$ref": "#/entities/pmoc_routines"
+      },
+      "description": "Coleção de tarefas do plano de manutenção e operação"
+    }
+  }
+}

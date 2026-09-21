@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny All Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened validation primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Test connection doc
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // OS Records Collection
+    match /os_records/{osId} {
+      function isValidOS(data) {
+        return data.keys().hasAll(['id', 'block', 'requester', 'status', 'priority']) &&
+               data.id is string && data.id.size() <= 128 &&
+               data.block is string && data.block.size() <= 128 &&
+               data.requester is string && data.requester.size() <= 128 &&
+               data.status in ['Aberto', 'Em Execução', 'Concluído'] &&
+               data.priority in ['Normal', 'Média', 'Alta', 'Urgente'] &&
+               (!('description' in data) || (data.description is string && data.description.size() <= 500));
+      }
+
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(osId) && isValidOS(incoming());
+      allow update: if isSignedIn() && isValidId(osId) && isValidOS(incoming());
+      allow delete: if isSignedIn() && isValidId(osId);
+    }
+
+    // PMOC Routines Collection
+    match /pmoc_routines/{routineId} {
+      function isValidRoutine(data) {
+        return data.keys().hasAll(['id', 'category', 'description', 'periodicity', 'status']) &&
+               data.id is string && data.id.size() <= 128 &&
+               data.category is string && data.category.size() <= 128 &&
+               data.description is string && data.description.size() <= 500 &&
+               data.periodicity in ['M', 'T', 'S', 'A'] &&
+               data.status in ['Em Dia', 'Agendado', 'Pendente', 'Atrasado'];
+      }
+
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(routineId) && isValidRoutine(incoming());
+      allow update: if isSignedIn() && isValidId(routineId) && isValidRoutine(incoming());
+      allow delete: if isSignedIn() && isValidId(routineId);
+    }
+  }
+}
