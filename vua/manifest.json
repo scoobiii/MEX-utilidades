@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "profile": "MEX-HVACR-PRODUCTION",
+  "governance": {
+    "documented": true,
+    "inspected": true,
+    "tested": true,
+    "audited": true,
+    "verified": true,
+    "publish_requires_ci": true
+  },
+  "quality_gates": {
+    "coverage": {
+      "lines": 100,
+      "statements": 100,
+      "functions": 100,
+      "branches": 100
+    },
+    "typecheck": true,
+    "build": true,
+    "k6": {
+      "http_req_failed": "<0.01",
+      "http_req_duration_p95_ms": 500,
+      "checks": ">0.99"
+    }
+  },
+  "evidence": [
+    "coverage/coverage-summary.json",
+    "artifacts/vua-verification.json",
+    "k6-results.json"
+  ]
+}
