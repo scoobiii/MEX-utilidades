@@ -19,6 +19,7 @@
 - [x] Forecast 1D / 1W / 1M / 1A
 - [x] Testes da camada de domínio
 - [x] VUA quality flow
+- [x] PR #1 mergeado em `main`
 - [ ] Execução CI comprovando 100%
 - [ ] k6 executado em CI
 
@@ -160,11 +161,17 @@
 - [ ] Production Ready
 
 ## Registro de entregas
+
 | Data | Sprint | Entrega | Evidência | Status |
 |---|---|---|---|---|
-| 2026-09-21 | S0 | domínio + VUA + quality gates + forecast semanal + roadmap | PR #1 / commits do branch | 🟡 CI ainda precisa comprovar gates |
-| 2026-09-21 | S0 | roadmap dinâmico e progresso no README | docs/ROADMAP.md + README.md | 🟢 |
-| 2026-09-21 | S0 | backlog vivo por sprint | docs/BACKLOG.md | 🟢 |
+| 2026-09-21 | S0 | domínio + VUA + quality gates + forecast semanal + roadmap | PR #1 | 🟢 MERGED |
+| 2026-09-21 | S0 | roadmap dinâmico e progresso no README | `docs/ROADMAP.md` + `README.md` | 🟢 |
+| 2026-09-21 | S0 | backlog vivo por sprint | `docs/BACKLOG.md` | 🟢 |
 
 ## Próximo foco
-**S1 → UX mobile-first**, começando pelo fluxo do técnico: Login → seleção do ativo → evaporador → condensador → telemetria → diagnóstico operacional → manutenção → evidência.
+
+**S1 → UX mobile-first**, começando pelo fluxo do técnico:
+
+`Login → seleção do ativo → evaporador → condensador → telemetria → diagnóstico operacional → manutenção → evidência`.
+
+Após cada novo merge, este arquivo deve ser atualizado com o sprint, evidência e status correspondente.
