@@ -64,7 +64,7 @@ describe('regras de status operacional', () => {
     expect(statusRequiresWorkOrder('OK')).toBe(false);
     expect(inferenceDisclaimer()).toContain('não substituem');
     expect(forecastSourceLabel('PROPHET_API')).toBe('Prophet API');
-    expect(forecastSourceLabel('DEMO_SYNTHETIC')).toContain('sintética');
+    expect(forecastSourceLabel('UNAVAILABLE')).toContain('indisponível');
   });
 });
 
