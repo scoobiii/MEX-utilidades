@@ -18,6 +18,20 @@
 - ⚪ Ainda não implementado
 - 🔴 Bloqueado por dependência externa
 
+## Linhas de produto
+
+### 1. App AC — Controle e Monitoramento
+Fluxo operacional do equipamento: cadastro → telemetria → diagnóstico → desempenho → histórico → forecast → operação offline.
+
+### 2. App PMOC — Gestão de Manutenção
+Fluxo de gestão: plano → distribuição → aderência → WorkOrder → execução → evidências → materiais/horas → auditoria → fechamento.
+
+### 3. Core Utilities — plataforma futura
+Core multi-utility para incorporar **energia, água, gás e outras atividades de utilities** reutilizando tenant, site, environment, asset, workflow, evidence, analytics e segurança. Regras específicas de HVAC permanecem em seus pacotes de domínio.
+
+### CI como gestor de entrega
+O CI lê `docs/delivery-plan.json`, identifica o Sprint, seus entregáveis e os benchmarks obrigatórios. Depois do merge, gera `docs/DELIVERY_STATUS.json` e atualiza backlog/roadmap com o progresso calculado.
+
 ## Linha do tempo
 
 | Sprint | Marco | Escopo | Status | Evidência |
