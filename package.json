@@ -13,7 +13,8 @@
     "coverage": "vitest run --coverage",
     "test:quality": "npm run lint && npm run coverage && npm run build && npm run vua:verify",
     "test:k6": "k6 run k6/smoke.js",
-    "vua:verify": "node scripts/vua-verify.mjs"
+    "vua:verify": "node scripts/vua-verify.mjs",
+    "antimock": "node scripts/anti-mock.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",

@@ -32,6 +32,9 @@ jobs:
       - name: Coverage 100%
         run: npm run coverage
 
+      - name: Anti-mock production gate
+        run: npm run antimock
+
       - name: VUA Verify
         run: npm run vua:verify
 
@@ -91,3 +94,25 @@ jobs:
       - name: API stub log
         if: always()
         run: cat /tmp/mex-api.log
+
+  delivery-state:
+    name: VUA / Update delivery timeline
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [quality, k6]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/update-delivery-state.mjs
+      - name: Commit timeline
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "vua-bot"
+          git config user.email "vua-bot@users.noreply.github.com"
+          git add docs/BACKLOG.md docs/ROADMAP.md
+          git commit -m "chore(vua): update delivery timeline [skip ci]"
+          git push
