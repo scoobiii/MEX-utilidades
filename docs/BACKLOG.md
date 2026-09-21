@@ -161,6 +161,7 @@
 - [ ] Production Ready
 
 ## Registro de entregas
+| 2026-09-21 | S1 | CI merge gate | coverage 100% + anti-mock + VUA + build + k6 | 🟢 |
 
 | Data | Sprint | Entrega | Evidência | Status |
 |---|---|---|---|---|
