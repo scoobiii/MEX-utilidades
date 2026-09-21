@@ -126,7 +126,7 @@ export function iaqRatingColor(rating: IAQRating): string {
 export function isOperationalStatus(value: string): value is OperationalStatus { return STATUS_LEGEND.includes(value as OperationalStatus); }
 export function statusRequiresWorkOrder(status: OperationalStatus): boolean { return ['PREVENTIVA', 'CORRETIVA', 'DESCOMISSIONAMENTO'].includes(status); }
 export function inferenceDisclaimer(): string { return 'Superaquecimento e sub-resfriamento inferidos não substituem pressão e temperatura de linha medidas.'; }
-export function forecastSourceLabel(source: 'PROPHET_API' | 'DEMO_SYNTHETIC'): string { return source === 'PROPHET_API' ? 'Prophet API' : 'Demonstração sintética'; }
+export function forecastSourceLabel(source: 'PROPHET_API' | 'UNAVAILABLE'): string { return source === 'PROPHET_API' ? 'Prophet API' : 'Forecast indisponível — aguardando fonte real'; }
 export function telemetryIsFresh(timestampMs: number, nowMs = Date.now(), maxAgeMs = 300_000): boolean { return Number.isFinite(timestampMs) && nowMs >= timestampMs && nowMs - timestampMs <= maxAgeMs; }
 export function assetIdentityComplete(identity: Partial<AssetIdentity>): boolean { return Object.values(identity).every((value) => typeof value === 'string' && value.trim().length > 0); }
 export function operationalStatusForDeltaT(deltaT: number): OperationalStatus { return isWithinDeltaTTarget(deltaT) ? 'OK' : 'PREVENTIVA'; }
