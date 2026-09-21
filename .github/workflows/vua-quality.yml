@@ -32,6 +32,9 @@ jobs:
       - name: Coverage 100%
         run: npm run coverage
 
+      - name: Delivery plan validation
+        run: npm run delivery:check
+
       - name: Anti-mock production gate
         run: npm run antimock
 
