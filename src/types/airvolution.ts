@@ -196,8 +196,8 @@ export interface AirVolutionUnit {
     power: number;
     cop: number;
   }[];
-  forecastSource: 'PROPHET_API' | 'DEMO_SYNTHETIC';
-  forecastHorizons: Array<'1D' | '1M' | '1A'>;
+  forecastSource: 'PROPHET_API' | 'UNAVAILABLE';
+  forecastHorizons: Array<'1D' | '1W' | '1M' | '1A'>;
   forecast: {
     time: string;
     t1_projected: number;
