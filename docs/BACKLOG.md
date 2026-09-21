@@ -2,6 +2,14 @@
 
 > Atualizado a cada entrega verificável. Itens só avançam quando existe evidência no repositório, CI ou VUA.
 
+## Produtos / linhas de produto
+
+- **App AC — Controle e Monitoramento:** ativos, telemetria, diagnóstico, desempenho, forecast e operação offline.
+- **App PMOC — Gestão de Manutenção:** planos PMOC, aderência, ordens de serviço, evidências, materiais, horas e auditoria.
+- **Core Utilities — futuro:** núcleo reutilizável para energia, água, gás e outras utilities; HVAC é um domínio, não uma limitação do core.
+
+O plano machine-readable em `docs/delivery-plan.json` é a referência do CI para sprints, entregáveis, produtos e benchmarks.
+
 ## Regras
 - Todo PR aponta para um Sprint/épico.
 - Após cada merge: atualizar status, evidência, percentual e próximos itens.
