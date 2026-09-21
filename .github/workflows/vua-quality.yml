@@ -96,23 +96,34 @@ jobs:
         run: cat /tmp/mex-api.log
 
   delivery-state:
-    name: VUA / Update delivery timeline
+    name: VUA / Prepare delivery timeline PR
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [quality, k6]
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: node scripts/update-delivery-state.mjs
-      - name: Commit timeline
+      - name: Open delivery timeline PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ github.sha }}
         run: |
-          if git diff --quiet; then exit 0; fi
+          if git diff --quiet; then
+            echo "DELIVERY TIMELINE: no changes"
+            exit 0
+          fi
           git config user.name "vua-bot"
           git config user.email "vua-bot@users.noreply.github.com"
-          git add docs/BACKLOG.md docs/ROADMAP.md
-          git commit -m "chore(vua): update delivery timeline [skip ci]"
-          git push
+          git checkout -b "automation/delivery-state-${SOURCE_SHA}"
+          git add docs/BACKLOG.md docs/ROADMAP.md docs/DELIVERY_STATUS.json
+          git commit -m "chore(vua): update delivery timeline"
+          git push --set-upstream origin "automation/delivery-state-${SOURCE_SHA}"
+          gh pr create             --base main             --head "automation/delivery-state-${SOURCE_SHA}"             --title "chore(vua): update delivery timeline"             --body "Automated post-merge delivery-state update. This PR recalculates sprint/product progress from docs/delivery-plan.json and the verified backlog. It must pass the same VUA quality gates before merging into main."
