@@ -111,9 +111,11 @@ describe('proveniência, identidade e forecast', () => {
 
   it('mantém contratos de forecast e PMOC explícitos', () => {
     expect(forecastHorizonLabel('1D')).toContain('24');
+    expect(forecastHorizonLabel('1W')).toContain('7');
     expect(forecastHorizonLabel('1M')).toContain('30');
     expect(forecastHorizonLabel('1A')).toContain('12');
     expect(supportsForecastHorizon('1D')).toBe(true);
+    expect(supportsForecastHorizon('1W')).toBe(true);
     expect(supportsForecastHorizon('1M')).toBe(true);
     expect(supportsForecastHorizon('1A')).toBe(true);
     expect(supportsForecastHorizon('7D')).toBe(false);
