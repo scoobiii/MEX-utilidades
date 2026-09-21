@@ -89,12 +89,14 @@ export const PROVENANCE_RULES = {
 
 export const FORECAST_RULE = 'Forecast Prophet é projeção, nunca medição observada; expor fonte, horizonte e intervalo de confiança.';
 
-export function forecastHorizonLabel(horizon: '1D' | '1M' | '1A'): string {
-  return { '1D': 'Próximas 24 horas', '1M': 'Próximos 30 dias', '1A': 'Próximos 12 meses' }[horizon];
+export type ForecastHorizon = '1D' | '1W' | '1M' | '1A';
+
+export function forecastHorizonLabel(horizon: ForecastHorizon): string {
+  return { '1D': 'Próximas 24 horas', '1W': 'Próximos 7 dias', '1M': 'Próximos 30 dias', '1A': 'Próximos 12 meses' }[horizon];
 }
 
-export function supportsForecastHorizon(value: string): value is '1D' | '1M' | '1A' {
-  return value === '1D' || value === '1M' || value === '1A';
+export function supportsForecastHorizon(value: string): value is ForecastHorizon {
+  return value === '1D' || value === '1W' || value === '1M' || value === '1A';
 }
 
 export function isWithinDeltaTTarget(deltaT: number): boolean {

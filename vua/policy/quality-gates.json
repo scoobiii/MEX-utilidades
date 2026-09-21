@@ -1,0 +1,17 @@
+{
+  "policy": "VUA-MEX-QUALITY-GATES",
+  "version": "1.0.0",
+  "merge": {
+    "required": [
+      "typecheck",
+      "unit_coverage_100",
+      "build",
+      "vua_verify",
+      "k6_smoke"
+    ],
+    "on_failure": "BLOCK"
+  },
+  "coverage_scope": "src/domain/**/*.ts",
+  "coverage_metrics": ["lines", "statements", "functions", "branches"],
+  "note": "100% coverage applies to the business/domain layer. UI behavior is additionally verified by E2E gates when the E2E suite is introduced."
+}

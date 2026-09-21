@@ -35,8 +35,11 @@ describe('regras de status operacional', () => {
   it('aplica precedência de ciclo de vida e risco', () => {
     expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE' })).toBe('OK');
     expect(resolveOperationalStatus({ gateway: 'degraded', thermal: 'SEM_ANOMALIA_EVIDENTE' })).toBe('PREVENTIVA');
+    expect(resolveOperationalStatus({ gateway: 'online', thermal: 'OBSERVAR' })).toBe('PREVENTIVA');
     expect(resolveOperationalStatus({ gateway: 'offline', thermal: 'SEM_ANOMALIA_EVIDENTE' })).toBe('CORRETIVA');
     expect(resolveOperationalStatus({ gateway: 'online', thermal: 'ATENCAO' })).toBe('CORRETIVA');
+    expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE', correctiveOpen: true })).toBe('CORRETIVA');
+    expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE', preventiveDue: true })).toBe('PREVENTIVA');
     expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE', projectPlanned: true, correctiveOpen: true })).toBe('PROJETO');
     expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE', decommissioned: true })).toBe('DESCOMISSIONAMENTO');
     expect(resolveOperationalStatus({ gateway: 'online', thermal: 'SEM_ANOMALIA_EVIDENTE', decommissioned: true, sparePartStock: true })).toBe('ESTOQUE');
@@ -57,6 +60,7 @@ describe('regras de status operacional', () => {
     expect(iaqRatingColor('Crítico')).toBe('#dc2626');
     expect(statusRequiresWorkOrder('PREVENTIVA')).toBe(true);
     expect(statusRequiresWorkOrder('CORRETIVA')).toBe(true);
+    expect(statusRequiresWorkOrder('DESCOMISSIONAMENTO')).toBe(true);
     expect(statusRequiresWorkOrder('OK')).toBe(false);
     expect(inferenceDisclaimer()).toContain('não substituem');
     expect(forecastSourceLabel('PROPHET_API')).toBe('Prophet API');
@@ -80,8 +84,11 @@ describe('IAQ GPA Index', () => {
   it('calcula índice somente de entradas físicas válidas', () => {
     expect(calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: 50, bvocPpm: 0 })).toBe(0);
     expect(calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: 30, bvocPpm: 0 })).toBe(8);
+    expect(calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: 70, bvocPpm: 0 })).toBe(4);
     expect(calculateGpaIAQIndex({ eco2Ppm: 1000, humidityPct: 70, bvocPpm: 0.1 })).toBeGreaterThan(0);
     expect(() => calculateGpaIAQIndex({ eco2Ppm: -1, humidityPct: 50, bvocPpm: 0 })).toThrow(RangeError);
+    expect(() => calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: -1, bvocPpm: 0 })).toThrow(RangeError);
+    expect(() => calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: 50, bvocPpm: -1 })).toThrow(RangeError);
     expect(() => calculateGpaIAQIndex({ eco2Ppm: 450, humidityPct: 101, bvocPpm: 0 })).toThrow(RangeError);
   });
 });
@@ -91,6 +98,8 @@ describe('proveniência, identidade e forecast', () => {
     expect(noDiagnosisFromTemperatureOnly()).toBe(true);
     expect(canPromoteInferenceToDiagnosis({ hasPressureSensors: true, hasLineTemperatureSensors: true, hasRecentObservedTelemetry: true })).toBe(true);
     expect(canPromoteInferenceToDiagnosis({ hasPressureSensors: false, hasLineTemperatureSensors: true, hasRecentObservedTelemetry: true })).toBe(false);
+    expect(canPromoteInferenceToDiagnosis({ hasPressureSensors: true, hasLineTemperatureSensors: false, hasRecentObservedTelemetry: true })).toBe(false);
+    expect(canPromoteInferenceToDiagnosis({ hasPressureSensors: true, hasLineTemperatureSensors: true, hasRecentObservedTelemetry: false })).toBe(false);
   });
 
   it('valida identidade patrimonial completa', () => {
@@ -102,11 +111,19 @@ describe('proveniência, identidade e forecast', () => {
 
   it('mantém contratos de forecast e PMOC explícitos', () => {
     expect(forecastHorizonLabel('1D')).toContain('24');
+    expect(forecastHorizonLabel('1W')).toContain('7');
+    expect(forecastHorizonLabel('1M')).toContain('30');
+    expect(forecastHorizonLabel('1A')).toContain('12');
+    expect(supportsForecastHorizon('1D')).toBe(true);
+    expect(supportsForecastHorizon('1W')).toBe(true);
+    expect(supportsForecastHorizon('1M')).toBe(true);
     expect(supportsForecastHorizon('1A')).toBe(true);
     expect(supportsForecastHorizon('7D')).toBe(false);
     expect(canSyncPlan(true, true)).toBe(true);
     expect(canSyncPlan(true, false)).toBe(false);
+    expect(canSyncPlan(false, true)).toBe(false);
     expect(apiSmokeEndpoints('AV/1')[0]).toBe('/api/v1/health');
+    expect(apiSmokeEndpoints('AV/1')[1]).toContain('AV%2F1');
     expect(apiHealthPath()).toBe('/api/v1/health');
     expect(userDeliverable()).toContain('IAQ');
     expect(technicianDeliverable()).toContain('Telemetria');
@@ -118,9 +135,12 @@ describe('proveniência, identidade e forecast', () => {
     expect(isWithinDeltaTTarget(8)).toBe(true);
     expect(isWithinDeltaTTarget(14)).toBe(true);
     expect(isWithinDeltaTTarget(7.9)).toBe(false);
+    expect(isWithinDeltaTTarget(Number.NaN)).toBe(false);
     expect(operationalStatusForDeltaT(11)).toBe('OK');
     expect(operationalStatusForDeltaT(20)).toBe('PREVENTIVA');
     expect(telemetryIsFresh(1_000, 301_000, 300_000)).toBe(true);
     expect(telemetryIsFresh(1_000, 301_001, 300_000)).toBe(false);
+    expect(telemetryIsFresh(400_000, 300_000, 300_000)).toBe(false);
+    expect(telemetryIsFresh(Number.NaN, 300_000, 300_000)).toBe(false);
   });
 });
