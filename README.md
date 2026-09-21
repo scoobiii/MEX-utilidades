@@ -42,3 +42,15 @@ npm run coverage
 npm run vua:verify
 npm run build
 npm run k6
+
+## Progresso do produto
+
+**Estimativa atual contra os requisitos deste README: ~35%.** Este percentual mede requisitos com implementação verificável, não quantidade de código. A linha do tempo oficial é mantida em [docs/ROADMAP.md](docs/ROADMAP.md) e avança conforme sprints são efetivamente mergeados.
+
+### Linha de entrega
+
+Fundação → MVP técnico → MVP operacional → PMOC/execução → Integrações → IAQ/treinamento → Produção
+
+Um sprint só é concluído após implementação + testes + cobertura + documentação + VUA + PR mergeado.
+
+**Produção ainda não está liberada.**
